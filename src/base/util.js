@@ -1,22 +1,15 @@
 import router from '../router'
 
-function setCookie(name, value, expireDay) {
-    expireDay = expireDay || 7;
-    $.cookie(name, value, {
-        expires: expireDay
-    });
-}
-
-function getCookie(name) {
-    return $.cookie(name);
-}
-
 function changeRouter(opt) {
     router.push(opt);
 }
 
 function goBack() {
     router.go(-1);
+}
+
+function trim(str){
+    return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
 Date.prototype.format = function(fmt) { 
@@ -44,4 +37,4 @@ function formatDate(value,format){
     return new Date(value).format(format);
 }
 
-export default { setCookie, getCookie, changeRouter, goBack,formatDate }
+export default { trim, changeRouter, goBack,formatDate }

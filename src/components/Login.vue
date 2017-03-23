@@ -33,7 +33,7 @@
         },
         methods: {
             validate(){
-                if(!$.trim(this.form.name) || !$.trim(this.form.pwd)){
+                if(!this.utilHelper.trim(this.form.name) || !this.utilHelper.trim(this.form.pwd)){
                     return false;
                 }
                 return true;

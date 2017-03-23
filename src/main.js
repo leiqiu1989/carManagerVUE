@@ -5,12 +5,11 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import axios from 'axios'
-import $ from 'jquery'
-require('./base/jquery.cookie.min')
 import util from './base/util'
 import store from './vuex/index';
 import 'element-ui/lib/theme-default/index.css'
 Vue.use(ElementUI)
+
 Vue.prototype.utilHelper = util
 
 const qs = require('querystring')
