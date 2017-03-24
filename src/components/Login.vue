@@ -1,102 +1,114 @@
 <template>
-    <div class="login">
-        <div class="header">
-            货车帮企业管理后台
+    <div class="container">
+        <div class="login">
+            <div class="header">
+                货车帮企业管理后台
+            </div>
+            <div class="content">
+                <el-form v-loading="loading" :model="form" :rules="rules" element-loading-text="正在登陆..." ref="form">
+                <el-form-item label="账 号" prop="name">
+                    <el-input v-model="form.name" placeholder="请输入登录账号"></el-input>
+                </el-form-item>
+                <el-form-item label="密 码" prop="pwd">
+                    <el-input v-model="form.pwd" type="password" placeholder="请输入登录密码"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit('form')">登 录</el-button>
+                    <el-button type="default" @click="onReset">重 置</el-button>
+                </el-form-item>
+                </el-form>
+            </div>        
         </div>
-        <div class="content">
-            <el-form ref="form">
-            <el-form-item label="账 号">
-                <el-input v-model="form.name" placeholder="请输入登录账号"></el-input>
-            </el-form-item>
-            <el-form-item label="密 码">
-                <el-input v-model="form.pwd" type="password" placeholder="请输入登录密码"></el-input>
-            </el-form-item>
-            <el-form-item>
-                <el-button type="primary" @click="onSubmit">登 录</el-button>
-            </el-form-item>
-            </el-form>
-        </div>        
     </div>
-    
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
     export default {
         data() {
             return {
                 form: {
                     name: '',
                     pwd: ''
-                }
+                },
+                rules:{
+                    name:[{
+                        required: true, message: '用户名不能为空!', trigger: 'blur'
+                    }],
+                    pwd:[{
+                        required: true, message: '密码不能为空!', trigger: 'blur'
+                    }]
+                },
+                loading:false,
             }
         },
         methods: {
-            validate(){
-                if(!this.utilHelper.trim(this.form.name) || !this.utilHelper.trim(this.form.pwd)){
-                    return false;
-                }
-                return true;
-            },
-            onSubmit() {
+            onSubmit(form) {
                 var me = this;
-                if(!this.validate()){
-                    this.$message({
-                        message: '账户名和密码不能为空!',
-                        type: 'warning',
-                        duration:1500
-                    });
-                    return false;                    
-                }
-                this.$http.post('/doLogin', {                    
-                    username:this.form.name,
-                    password:this.form.pwd                    
-                }).then((response) => {
-                    var data = response.data;
-                    if (data.status === 'OK') {
-                        var content = data.content;
-                        if (content) {
-                            me.setLoginStatus({
-                                sid:content.id,
-                                st:content.token
-                            })
-                        }
-                        me.utilHelper.changeRouter('index');
+                this.$refs[form].validate((valid) => {
+                    if (valid) {
+                        me.loading = true;
+                        setTimeout(function() {
+                            me.$http.post('/doLogin', {                    
+                                username:me.form.name,
+                                password:me.form.pwd                    
+                            }).then((response) => {
+                                var data = response.data;
+                                if (data.status === 'OK') {
+                                    var content = data.content;
+                                    if (content) {
+                                        me.utilHelper.setStore('sid',content.id);
+                                        me.utilHelper.setStore('st',content.token);
+                                        me.utilHelper.setStore('username',me.form.name);
+                                    }
+                                    me.utilHelper.changeRouter({name:'GPSDevice'});
+                                } else {
+                                    var msg= data.errorMsg || '登录失败'
+                                    me.$message.error(msg);
+                                }
+                                me.loading = false;
+                            });
+                        }, 500);
                     } else {
-                        var msg= data.errorMsg || '登录失败'
-                        this.$message({
-                            message: msg,
-                            type: 'warning',
-                            duration:1500
-                        });
+                        return false;
                     }
-                })
+                });
             },
-            ...mapActions(['setLoginStatus'])
+            onReset(){
+                this.form.name = '';
+                this.form.pwd = '';
+            }
         }
     }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="stylus" rel="stylesheet/stylus" scoped>
-    .login
+    .container
         position:absolute
-        top:30%
-        left:50%
-        width:450px
-        height:auto
-        margin-top:0
-        transform:translate(-50%, -30%)
-        border: 1px solid #cfcfcf
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
-        .header{
-            padding:12px
-            color: #31708f
-            background-color: #d9edf7
-            border-color: #bce8f1
-            font-size:14px
-        }
-        .content{
-            padding:20px
-        }
+        top:0
+        bottom:0
+        right:0
+        left:0
+        background-color:#1f2d3d
+        .login
+            position:absolute
+            background-color:#fff
+            top:30%
+            left:50%
+            width:450px
+            height:auto
+            margin-top:0
+            transform:translate(-50%, -30%)
+            border: 1px solid #cfcfcf
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2)
+            .header
+                padding:12px
+                color: #31708f
+                background-color: #d9edf7
+                border-color: #bce8f1
+                font-size:14px            
+            .content
+                padding:20px
+            
+    
 </style>

@@ -9,5 +9,7 @@
 </script>
 
 <style lang="stylus" rel="stylesheet/stylus">
-    @import '../static/layout.styl'
+    @import '../static/reset.css'
+    @import '../static/sidebar.css'
+    @import '../static/base.styl'
 </style>
