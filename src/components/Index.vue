@@ -2,21 +2,45 @@
     <div class="container">
         <div class="header">
             <h3>货车帮企业管理后台</h3>
+            <div class="userinfo">
+                <span>{{ userInfo.username }}</span>
+                <a href="javascript:" @click="loginOut"> 
+                    <img src="../assets/img/out.png" />
+                </a>
+            </div>
         </div>
         <div class="content">
             <div class="left-content">
                 <v-menu></v-menu>
             </div>
-            <div class="right-content">
+            <div class="right-content">                
                 <router-view name="contentView"></router-view>
             </div>
-        </div>
-    </div>    
+        </div>        
+    </div>
 </template>
 
 <script>
-    import menu from './base/menu.vue'; 
+    import menu from './base/menu.vue';
+    import { mapGetters,mapActions } from 'vuex';
     export default {
+        computed:{
+            ...mapGetters({userInfo:'getIdentity'})
+        },
+        methods:{
+            loginOut(){
+                var me = this;
+                this.$confirm('确认退出系统?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    me.signOut();
+                    me.utilHelper.changeRouter({name:'Login'});
+                });
+            },
+            ...mapActions(['signOut'])
+        },
         components:{
             "v-menu":menu
         }
@@ -37,6 +61,16 @@
         padding-left:10px
         > h3
             font-weight:700
+            width:300px
+            float:left
+        > .userinfo
+            float:right
+            > a
+                position:relative
+                top:2px
+            img{
+                margin:0 30px 0 10px
+            }
     .content
         position: absolute
         bottom: 0

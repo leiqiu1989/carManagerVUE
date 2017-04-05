@@ -17,18 +17,20 @@
                     <el-button type="default" @click="onReset">重 置</el-button>
                 </el-form-item>
                 </el-form>
-            </div>        
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    import api from '../base/api'
+    import { mapActions } from 'vuex'
     export default {
         data() {
             return {
                 form: {
-                    name: '',
-                    pwd: ''
+                    name: '13598',
+                    pwd: '123456'
                 },
                 rules:{
                     name:[{
@@ -48,7 +50,7 @@
                     if (valid) {
                         me.loading = true;
                         setTimeout(function() {
-                            me.$http.post('/doLogin', {                    
+                            api.Login({                    
                                 username:me.form.name,
                                 password:me.form.pwd                    
                             }).then((response) => {
@@ -56,9 +58,12 @@
                                 if (data.status === 'OK') {
                                     var content = data.content;
                                     if (content) {
-                                        me.utilHelper.setStore('sid',content.id);
-                                        me.utilHelper.setStore('st',content.token);
-                                        me.utilHelper.setStore('username',me.form.name);
+                                        me.setLoginStatus(true);
+                                        me.setIdentity({
+                                            sid: content.id,
+                                            st: content.token,
+                                            username: me.form.name
+                                        });
                                     }
                                     me.utilHelper.changeRouter({name:'GPSDevice'});
                                 } else {
@@ -76,7 +81,8 @@
             onReset(){
                 this.form.name = '';
                 this.form.pwd = '';
-            }
+            },
+            ...mapActions(['setLoginStatus','setIdentity'])
         }
     }
 </script>

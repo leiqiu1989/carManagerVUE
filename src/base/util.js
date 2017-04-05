@@ -1,6 +1,7 @@
 import router from '../router';
 import {
-    MessageBox
+    MessageBox,
+    Loading
 } from 'element-ui';
 var store = require('store');
 
@@ -18,6 +19,10 @@ function setStore(key, value) {
 
 function getStore(key) {
     return store.get(key);
+}
+
+function removeStore(key) {
+    store.remove(key);
 }
 
 function trim(str) {
@@ -75,6 +80,7 @@ function callBackProcess(data) {
 export default {
     setStore,
     getStore,
+    removeStore,
     trim,
     changeRouter,
     goBack,

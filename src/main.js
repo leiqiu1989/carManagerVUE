@@ -12,23 +12,6 @@ Vue.use(ElementUI);
 
 Vue.prototype.utilHelper = util;
 
-const qs = require('querystring')
-Vue.prototype.$http = axios.create({
-    baseURL: 'http://gpsoss.dev-ag.56qq.com',
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    },
-    transformRequest: [function(data) {
-        var st = util.getStore('st');
-        var sid = util.getStore('sid');
-        data.st = st;
-        data.sid = sid;
-        data = qs.stringify(data)
-        return data
-    }]
-});
-
 Vue.config.productionTip = false
 
 // 注册filter

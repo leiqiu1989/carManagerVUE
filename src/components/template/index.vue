@@ -2,7 +2,7 @@
     <div class="panel panel-transparent flexbox" v-loading="loading" element-loading-text="数据加载中....">
         <div class="panel-heading">
             <el-breadcrumb separator="/">
-                <el-breadcrumb-item :to="{ name: 'GPSDevice' }">GPS设备管理</el-breadcrumb-item>
+                <el-breadcrumb-item :to="{ name: 'GPSDevice' }">模板管理</el-breadcrumb-item>
                 <el-breadcrumb-item>列表</el-breadcrumb-item>
             </el-breadcrumb>
         </div>
@@ -23,7 +23,7 @@
             </el-form>
         </div>
         <div class="panel-toolbar">
-            <el-button type="primary" size="small" @click="addGPS">
+            <el-button type="primary" size="small">
                 <i class="fa fa-plus fa-patch"></i>
                 新 增
             </el-button>
@@ -168,10 +168,6 @@
             },
             onSubmit(){
                 this.getData();
-            },
-            // 新增
-            addGPS(){
-                this.utilHelper.changeRouter('gps/add');
             }
         }
     }

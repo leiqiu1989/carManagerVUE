@@ -1,10 +1,8 @@
-export default{
-    loginStatus:(state) => {
-        return !!state.st && !!state.sid;
+export default {
+    loginStatus: (state) => {
+        return state.loginStatus
     },
-    getIdentity:(state)=> {
-        var st = state.st;
-        var sid = state.sid;
-        return { st,sid }
+    getIdentity: (state) => {
+        return state.userInfo;
     }
 };
