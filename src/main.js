@@ -16,7 +16,10 @@ Vue.config.productionTip = false
 
 // 注册filter
 Vue.filter('dateformat', function(value, format) {
-    return util.formatDate(value, format);
+    if (value) {
+        return util.formatDate(value, format);
+    }
+    return '';
 });
 
 /* eslint-disable no-new */

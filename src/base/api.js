@@ -46,5 +46,9 @@ export default {
     // gps设备
     GPSList(params) {
         return fetch('/avl/get-avl-info-list', params, { indetity: true });
+    },
+    // 新增gps设备
+    addGPS(params) {
+        return fetch('/avl/save-avl-info', params, { indetity: true });
     }
 }

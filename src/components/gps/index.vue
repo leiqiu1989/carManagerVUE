@@ -79,8 +79,8 @@
                 <el-table-column
                 label="销售日期">
                     <template scope="scope">
-                        <el-icon name="time"></el-icon>
-                        {{ scope.row.saleTime | dateformat("yyyy/MM/dd") }}
+                        <el-icon name="time" v-if="scope.row.saleTime"></el-icon>
+                        {{ scope.row.saleTime | dateformat("yyyy/MM/dd") }} 
                     </template>
                 </el-table-column>
                 <el-table-column

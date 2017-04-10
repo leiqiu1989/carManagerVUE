@@ -51,6 +51,7 @@ Date.prototype.format = function(fmt) {
 }
 
 function formatDate(value, format) {
+    format = format || 'yyyy-MM-dd';
     return new Date(value).format(format);
 }
 
